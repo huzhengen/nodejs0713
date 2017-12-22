@@ -1,0 +1,16 @@
+{
+  "name": "1222",
+  "version": "1.0.0",
+  "description": "1222demo",
+  "main": "demo4.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lufang",
+  "license": "ISC",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.16.2",
+    "superagent": "^3.8.2"
+  }
+}
