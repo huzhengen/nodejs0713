@@ -1,0 +1,9 @@
+/0629/node_modules/*
+
+/node-lessons/node_modules/*
+
+/node-lessons/lesson6/node_modules/*
+
+.vscode/*
+
+.idea/*
