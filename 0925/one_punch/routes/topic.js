@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models/in_memo/user');
-const Topic = require('../models/in_memo/topic');
+const User = require('../models/mongo/user');
+const Topic = require('../models/mongo/topic');
 
 // localhost:8082/topic/
 router.route('/').get((req, res, next)=>{
@@ -20,10 +20,7 @@ router.route('/').get((req, res, next)=>{
         })
 }).post((req, res, next)=>{
     (async ()=>{
-        console.log(Number(req.body.userId));
-        let user = await User.getUserById(Number(req.body.userId));
-        console.log(user);
-        // const user = await User.getUserById(Number(req.body.userId));
+        const user = await User.getUserById(req.body.userId);
         let topic = await Topic.createANewTopic({
             creator: user,
             title: req.body.title,
@@ -42,9 +39,41 @@ router.route('/').get((req, res, next)=>{
         })
 });
 
+router.route('/:id').get((req, res, next)=>{
+    (async ()=>{
+        let topic = await Topic.getTopicById(req.params.id);
+        return {
+            code: 0,
+            topic: topic,
+        }
+    })()
+        .then(r=>{
+            res.json(r)
+        })
+        .catch(e=>{
+            next(e);
+        })
+}).patch((req, res)=>{
+    (async ()=>{
+        let topic = await Topic.updateTopicById(req.params.id, {
+            content: req.body.content,
+        });
+        return {
+            code: 0,
+            topic: topic,
+        }
+    })()
+        .then(r=>{
+            res.json(r)
+        })
+        .catch(e=>{
+            next(e)
+        })
+})
+
 router.route('/:id/reply').post((req, res, next)=>{
     (async ()=>{
-        const user = await User.getUserById(Number(req.body.userId));
+        const user = await User.getUserById(req.body.userId);
         let topic = await Topic.replyATopic({
             topicId: req.params.id,
             creator: user,
